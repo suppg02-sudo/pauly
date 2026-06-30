@@ -212,6 +212,77 @@ sudo ufw enable
 
 ---
 
+## Phase 7: Optional Setup (pick what you need)
+
+Each item is independent — install only what you want.
+
+### 7a. One-Command Bootstrap (does Phases 1-6 automatically)
+
+```bash
+bash /opt/pauly/optional/05-init-script/init.sh
+```
+
+### 7b. Agent Config (AGENTS.md + context files)
+
+```bash
+cp /opt/pauly/optional/01-agents-md/AGENTS.template.md ~/.config/opencode/AGENTS.md
+cp -r /opt/pauly/optional/02-context-files/standards ~/.config/opencode/context/
+cp -r /opt/pauly/optional/02-context-files/workflows ~/.config/opencode/context/
+```
+
+### 7c. MCP Servers (context7, github, browser, brave-search)
+
+```bash
+# See optional/04-mcp-config/README.md for full setup
+# Quick merge into opencode.json:
+python3 -c "
+import json
+with open('/root/.config/opencode/opencode.json') as f: cfg=json.load(f)
+with open('/opt/pauly/optional/04-mcp-config/mcp-template.json') as f: mcp=json.load(f)
+cfg.setdefault('mcp',{}).update(mcp['mcp'])
+json.dump(cfg, open('/root/.config/opencode/opencode.json','w'), indent=2)
+"
+```
+
+### 7d. PA Dashboard
+
+```bash
+source /opt/pauly/.env
+bash /opt/pauly/optional/06-pa-skill/scripts/deploy.sh
+
+cat > /etc/systemd/system/pa-dashboard.service << EOF
+[Unit]
+Description=PA Dashboard
+After=network.target
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 -m http.server ${PORT_PA} --directory /opt/pauly
+Restart=unless-stopped
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload && systemctl enable --now pa-dashboard
+```
+
+### 7e. Skills Installation
+
+```bash
+cp -r /opt/pauly/skills/directus-server ~/.config/opencode/skills/
+cp -r /opt/pauly/skills/astro-starlight ~/.config/opencode/skills/
+cp -r /opt/pauly/optional/06-pa-skill ~/.config/opencode/skills/pa
+cp -r /opt/pauly/optional/07-react-admin ~/.config/opencode/skills/react-admin
+```
+
+### 7f. React-Admin Demo Panel
+
+```bash
+cd /opt/pauly/optional/07-react-admin
+docker compose build --no-cache && docker compose up -d
+# URL: http://${SERVER_IP}:5200/
+```
+
+---
+
 ## Quick Reference
 
 ```bash
@@ -257,5 +328,12 @@ cd /opt/pauly/astro-docs && docker compose build --no-cache && docker compose up
 │   ├── docker-compose.yml         ← ${PORT_ASTRO}, ${DOCKER_NETWORK}
 │   ├── astro.config.mjs           ← process.env.PORT_ASTRO, SERVER_IP
 │   └── src/lib/directus.ts        ← import.meta.env.DIRECTUS_URL (env-driven)
-└── skills/
+├── skills/                        ← directus-server, astro-starlight
+└── optional/                      ← Pick what you need
+    ├── 01-agents-md/              ← AGENTS.md template
+    ├── 02-context-files/          ← Standards + workflows
+    ├── 03-skills/                 ← Installation guide
+    ├── 04-mcp-config/             ← MCP servers
+    ├── 05-init-script/            ← init.sh bootstrap
+    └── 06-pa-skill/              ← PA dashboard
 ```

@@ -1,0 +1,20 @@
+services:
+  react-admin:
+    build: .
+    container_name: react-admin
+    restart: unless-stopped
+    ports:
+      - "${PORT_REACT_ADMIN:-5200}:5200"
+    environment:
+      - PORT=5200
+    networks:
+      - ${DOCKER_NETWORK:-directus_default}
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+networks:
+  shared:
+    external: true
+    name: ${DOCKER_NETWORK:-directus_default}

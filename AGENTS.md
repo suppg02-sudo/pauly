@@ -25,20 +25,27 @@ Before starting:
 
 ## Quick Start (For Agents)
 
-When asked to "set up pauly" or "deploy the docs server", follow this sequence:
+**Fastest path** — use the bootstrap script:
+
+```
+1. git clone https://github.com/suppg02-sudo/pauly.git /opt/pauly
+2. cd /opt/pauly && cp .env.example .env
+3. bash optional/05-init-script/init.sh    # does everything
+```
+
+**Manual path** — step by step:
 
 ```
 1. cp .env.example .env
-2. bash scripts/detect-ports.sh        # auto-fill free ports
-3. Edit .env — set SERVER_IP, DIRECTUS_SECRET, DIRECTUS_TOKEN
+2. bash scripts/detect-ports.sh
+3. Edit .env — review SERVER_IP, secrets
 4. cd directus && docker compose up -d
 5. Wait 10s, verify: curl http://localhost:${PORT_DIRECTUS}/server/health
 6. Generate Directus static token, set it in .env as DIRECTUS_TOKEN
 7. cd astro-docs && docker compose up -d
 8. Verify: curl http://localhost:${PORT_ASTRO}/
+9. (optional) bash optional/05-init-script/init.sh --skills
 ```
-
-Read `SETUP.md` for the full 7-phase guide.
 
 ## Port Variables (all in `.env`)
 
@@ -60,46 +67,66 @@ Read `SETUP.md` for the full 7-phase guide.
 ```
 pauly/
 ├── AGENTS.md                        ← YOU ARE HERE
-├── SETUP.md                         ← Complete setup guide (7 phases)
+├── SETUP.md                         ← Complete setup guide
 ├── README.md                        ← Human-readable overview
-├── .env.example                     ← ALL config — single source of truth
+├── .env.example                     ← ALL config — single source of truth (fresh passwords)
 │
 ├── scripts/
 │   └── detect-ports.sh              ← Auto-detect free ports → .env
 │
-├── directus/
-│   ├── docker-compose.yml           ← All ports via ${VAR}
+├── directus/                        ← Phase 3: Directus deployment
+│   ├── docker-compose.yml
 │   ├── .env.example
 │   └── redis-entrypoint.sh
 │
-├── astro-docs/
+├── astro-docs/                      ← Phase 4: Astro Starlight
 │   ├── Dockerfile
-│   ├── docker-compose.yml           ← All ports via ${VAR}
+│   ├── docker-compose.yml
 │   ├── package.json
-│   ├── astro.config.mjs             ← Reads ports from process.env
+│   ├── astro.config.mjs
 │   ├── tsconfig.json
 │   ├── .env.example
-│   ├── src/
-│   │   ├── lib/directus.ts          ← Fully env-driven, no hardcoded URLs
-│   │   ├── pages/docs/[slug].astro  ← Dynamic page renderer
-│   │   ├── styles/custom.css
-│   │   ├── content/docs/            ← Starlight static markdown
-│   │   └── components/
-│   └── public/
+│   └── src/
 │
-└── skills/                          ← OpenCode skills for management
-    ├── directus-server/SKILL.md
-    └── astro-starlight/SKILL.md
+├── skills/                          ← Core skills (always included)
+│   ├── directus-server/SKILL.md
+│   └── astro-starlight/SKILL.md
+│
+└── optional/                        ← Optional phases (pick what you need)
+    ├── 01-agents-md/                ← AGENTS.md template (behavioral rules + triggers)
+    ├── 02-context-files/            ← Coding standards + workflows
+    ├── 03-skills/                   ← Skills installation guide
+    ├── 04-mcp-config/               ← MCP server config (context7, github, browser, search)
+    ├── 05-init-script/              ← Full bootstrap: init.sh (zero to running)
+    ├── 06-pa-skill/                 ← PA dashboard (HTML + systemd service)
+    └── 07-react-admin/              ← React-Admin demo panel (optional backend for Directus)
 ```
 
-## Default Credentials (CHANGE IMMEDIATELY)
+## Optional Phases
 
-| Item | Default |
-|------|---------|
-| Admin Email | `${ADMIN_EMAIL}` → `admin@example.com` |
-| Admin Password | `${ADMIN_PASSWORD}` → `admin123` |
-| API Token | `${DIRECTUS_TOKEN}` → `docs-api-token-change-me` |
-| DB Password | `${DB_PASSWORD}` → `directus123` |
+| Phase | What | When to Use |
+|-------|------|-------------|
+| `optional/01-agents-md` | AGENTS.md with behavioral rules, safety rules, triggers | Always — gives the agent instructions |
+| `optional/02-context-files` | Coding standards + workflow templates | When you want consistent conventions |
+| `optional/03-skills` | Installation guide for repo skills | When installing skills on the server |
+| `optional/04-mcp-config` | MCP servers (context7, github, browser, brave-search) | When using OpenCode IDE features |
+| `optional/05-init-script` | One-command bootstrap (`init.sh`) | Fresh server — does everything |
+| `optional/06-pa-skill` | PA dashboard HTML + systemd service | When you want a visual architecture overview |
+| `optional/07-react-admin` | React-Admin demo panel | When you need a full admin UI (optional Directus backend) |
+
+## Credentials (freshly generated in .env.example)
+
+| Item | Value |
+|------|-------|
+| Admin Email | `${ADMIN_EMAIL}` |
+| Admin Password | `${ADMIN_PASSWORD}` |
+| API Token | `${DIRECTUS_TOKEN}` |
+| DB Password | `${DB_PASSWORD}` |
+| Directus Secret | `${DIRECTUS_SECRET}` |
+| Redis Password | `${REDIS_PASSWORD}` |
+| NPM Password | `${NPM_PASSWORD}` |
+| Grafana Password | `${GRAFANA_PASSWORD}` |
+| Webhook Secret | `${WEBHOOK_SECRET}` |
 
 ## Agent Rules
 

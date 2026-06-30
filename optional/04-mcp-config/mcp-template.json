@@ -1,0 +1,24 @@
+{
+  "mcp": {
+    "context7": {
+      "type": "remote",
+      "url": "http://127.0.0.1:8801/sse",
+      "enabled": true
+    },
+    "agent-browser": {
+      "type": "remote",
+      "url": "http://127.0.0.1:8803/sse",
+      "enabled": true
+    },
+    "github": {
+      "type": "remote",
+      "url": "http://127.0.0.1:8804/sse",
+      "enabled": true
+    },
+    "brave-search": {
+      "type": "remote",
+      "url": "http://127.0.0.1:8802/sse",
+      "enabled": true
+    }
+  }
+}

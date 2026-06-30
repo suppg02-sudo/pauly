@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal Assistant</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+    color: #1e293b;
+    font-family: system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  .container { max-width: 1160px; width: 100%; min-height: 92vh; display: flex; flex-direction: column; justify-content: center; }
+  h1 { text-align: center; font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+  .subtitle { text-align: center; font-size: 0.9rem; color: #64748b; margin-bottom: 2rem; }
+  .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-bottom: 1.5rem; }
+  .pillar { background: #fff; border: 2px solid; border-radius: 14px; padding: 1.8rem 1.5rem; text-align: center; font-weight: 600; font-size: 1.15rem; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  .pillar:hover { transform: translateY(-3px); }
+  .pillar.publish { border-color: #3b82f6; box-shadow: 0 8px 30px -6px rgba(59,130,246,0.35); }
+  .pillar.learn { border-color: #14b8a6; box-shadow: 0 8px 30px -6px rgba(20,184,166,0.35); }
+  .pillar.manage { border-color: #8b5cf6; box-shadow: 0 8px 30px -6px rgba(139,92,246,0.35); }
+  .pillar .tools { margin-top: 1rem; display: none; flex-wrap: wrap; gap: 0.5rem; justify-content: center; position: relative; }
+  .pillar.open .tools { display: flex; }
+  .tool { display: inline-block; padding: 0.35rem 0.8rem; border-radius: 6px; font-size: 0.85rem; font-weight: 500; text-decoration: none; cursor: pointer; transition: transform 0.15s; }
+  .tool:hover { transform: scale(1.05); }
+  .pillar.publish .tool { background: #dbeafe; color: #1e40af; }
+  .pillar.learn .tool { background: #ccfbf1; color: #115e59; }
+  .pillar.manage .tool { background: #ede9fe; color: #5b21b6; }
+  .layers { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; }
+  .layer { border-radius: 10px; padding: 1.1rem 1.25rem; transition: transform 0.2s ease; }
+  .layer:hover { transform: translateY(-2px); }
+  .layer.ai { background: linear-gradient(135deg, #eff6ff, #dbeafe); border: 1.5px solid #93c5fd; }
+  .layer.app { background: linear-gradient(135deg, #faf5ff, #f3e8ff); border: 1.5px solid #c4b5fd; }
+  .layer.infra { background: linear-gradient(135deg, #ecfccb, #d9f99d); border: 1.5px solid #a3e635; }
+  .layer-label { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .layer.ai .layer-label { color: #1e40af; }
+  .layer.app .layer-label { color: #6b21a8; }
+  .layer.infra .layer-label { color: #3f6212; }
+  .badges { display: none; flex-wrap: wrap; gap: 0.4rem; }
+  .layer.open .badges { display: flex; }
+  .badge { padding: 0.25rem 0.6rem; border-radius: 6px; font-size: 0.8rem; font-weight: 500; cursor: default; }
+  .layer.ai .badge { background: #bfdbfe; color: #1e3a8a; }
+  .layer.app .badge { background: #ddd6fe; color: #4c1d95; }
+  .layer.infra .badge { background: #bef264; color: #365314; }
+  .icons { display: none; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+  .layer.open .icons { display: flex; }
+  .icon-link { display: inline-flex; align-items: center; gap: 0.35rem; text-decoration: none; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); transition: transform 0.15s; }
+  .icon-link:hover { transform: scale(1.1); }
+  .icon-link img { width: 28px; height: 28px; }
+  .toggle-all { display: block; margin: 0 auto 1.5rem; padding: 0.5rem 1.5rem; border: 2px solid #cbd5e1; border-radius: 8px; background: #fff; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; }
+  .toggle-all:hover { border-color: #94a3b8; background: #f8fafc; }
+  .top-icons { position: fixed; top: 1rem; right: 1rem; display: flex; gap: 0.75rem; z-index: 100; }
+  .top-icon { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.15s; text-decoration: none; }
+  .top-icon:hover { transform: scale(1.1); }
+  .top-icon img { width: 24px; height: 24px; }
+  .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; animation: pulse 2s infinite; position: absolute; top: 4px; right: 4px; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .subtitle, .toggle-all, .pillar, .layer, .top-icons { animation: fadeIn 0.5s ease both; }
+</style>
+</head>
+<body>
+
+<div class="top-icons">
+  <a href="#" id="dashLink" class="top-icon" title="Directus Admin">
+    <img src="https://cdn.simpleicons.org/directus/263238" alt="Dashboard" />
+  </a>
+  <a href="#" id="perfLink" class="top-icon" title="Performance" style="position:relative;">
+    <img src="https://cdn.simpleicons.org/grafana/f46800" alt="Performance" />
+    <span class="pulse-dot"></span>
+  </a>
+</div>
+
+<div class="container">
+  <h1>Personal Assistant</h1>
+  <p class="subtitle">Server architecture overview</p>
+
+  <button class="toggle-all" onclick="toggleAll()">Expand All / Collapse All</button>
+
+  <div class="pillars">
+    <!-- Publish -->
+    <div class="pillar publish" onclick="this.classList.toggle('open')">
+      Publish
+      <div class="tools">
+        <a href="#" data-link="blog" class="tool">Blogs</a>
+        <a href="#" data-link="docs" class="tool">Docs</a>
+        <span class="tool" style="cursor:pointer;" onclick="event.stopPropagation();alert('Media submenu — add your gallery/diagram links here')">Media</span>
+      </div>
+    </div>
+    <!-- Learn -->
+    <div class="pillar learn" onclick="this.classList.toggle('open')">
+      Learn
+      <div class="tools">
+        <span class="tool">Research</span>
+        <span class="tool">Study</span>
+        <span class="tool">Read</span>
+      </div>
+    </div>
+    <!-- Manage -->
+    <div class="pillar manage" onclick="this.classList.toggle('open')">
+      Manage
+      <div class="tools">
+        <span class="tool">Projects</span>
+        <span class="tool">Schedule</span>
+        <span class="tool">Content</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="layers">
+    <!-- AI Layer -->
+    <div class="layer ai" onclick="this.classList.toggle('open')">
+      <div class="layer-label">AI</div>
+      <div class="badges">
+        <span class="badge">Agents</span>
+        <span class="badge">Skills</span>
+        <span class="badge">Memory</span>
+        <span class="badge">MCP</span>
+        <span class="badge">LLM</span>
+      </div>
+    </div>
+    <!-- Application Layer -->
+    <div class="layer app" onclick="this.classList.toggle('open')">
+      <div class="layer-label">Application</div>
+      <div class="icons">
+        <a href="#" data-link="blog" class="icon-link"><img src="https://cdn.simpleicons.org/astro/ff5d01" alt="Astro" /></a>
+        <a href="#" data-link="docs" class="icon-link"><img src="https://cdn.simpleicons.org/starlight/2d2d2d" alt="Starlight" /></a>
+        <a href="#" data-link="opencode" class="icon-link"><img src="https://opencode.ai/_build/assets/opencode-desktop-icon-OSkS5hfD.png" alt="OpenCode" /></a>
+      </div>
+    </div>
+    <!-- Infrastructure Layer -->
+    <div class="layer infra" onclick="this.classList.toggle('open')">
+      <div class="layer-label">Infrastructure</div>
+      <div class="icons">
+        <a href="#" data-link="directus" class="icon-link"><img src="https://cdn.simpleicons.org/directus/263238" alt="Directus" /></a>
+        <span class="icon-link"><img src="https://cdn.simpleicons.org/docker/2496ed" alt="Docker" /></span>
+        <span class="icon-link"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/1280px-Postgresql_elephant.svg.png" alt="Postgres" style="width:24px;height:24px;" /></span>
+        <span class="icon-link"><img src="https://cdn.simpleicons.org/ubuntu/e95420" alt="Ubuntu" /></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Env-driven links ─────────────────────────────────────────────────────────
+// These are replaced at deploy time by init.sh, or edit manually.
+// Values below are defaults — override by editing this block.
+
+const SERVER_IP = '%%SERVER_IP%%' === '%%SERVER_IP%%' ? 'localhost' : '%%SERVER_IP%%';
+const PORT_DIRECTUS = '%%PORT_DIRECTUS%%' === '%%PORT_DIRECTUS%%' ? '8056' : '%%PORT_DIRECTUS%%';
+const PORT_ASTRO = '%%PORT_ASTRO%%' === '%%PORT_ASTRO%%' ? '3003' : '%%PORT_ASTRO%%';
+
+const LINKS = {
+  blog: `http://${SERVER_IP}:${PORT_ASTRO}/posts/`,
+  docs: `http://${SERVER_IP}:${PORT_ASTRO}/docs/`,
+  directus: `http://${SERVER_IP}:${PORT_DIRECTUS}/`,
+  opencode: `http://${SERVER_IP}:4096/`,
+  dashboard: `http://${SERVER_IP}:${PORT_DIRECTUS}/`,
+  perf: `http://${SERVER_IP}:3004/d/server-performance`,
+};
+
+// Apply links
+document.querySelectorAll('[data-link]').forEach(el => {
+  const key = el.getAttribute('data-link');
+  if (LINKS[key]) el.href = LINKS[key];
+});
+
+// Top icons
+document.getElementById('dashLink').href = LINKS.dashboard;
+document.getElementById('perfLink').href = LINKS.perf;
+
+// Toggle all
+function toggleAll() {
+  const pillars = document.querySelectorAll('.pillar');
+  const layers = document.querySelectorAll('.layer');
+  const anyOpen = document.querySelectorAll('.pillar.open, .layer.open').length > 0;
+  pillars.forEach(p => p.classList.toggle('open', !anyOpen));
+  layers.forEach(l => l.classList.toggle('open', !anyOpen));
+}
+</script>
+</body>
+</html>
