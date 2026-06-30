@@ -1,0 +1,33 @@
+---
+title: Getting Started
+description: Set up your Directus + Astro Starlight documentation site
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+# Getting Started
+
+Welcome to your **Directus + Astro Starlight** documentation site.
+
+This site combines:
+- **Starlight** — Astro's documentation theme with sidebar, search, and dark mode
+- **Directus** — headless CMS for managing documentation pages via REST API
+
+## Two Ways to Add Content
+
+<CardGrid stagger>
+  <Card title="Static Markdown" icon="document">
+    Add `.md` or `.mdx` files to `src/content/docs/` — Starlight's native content
+    collection. Best for stable, versioned documentation.
+  </Card>
+  <Card title="Directus CMS" icon="settings">
+    Create pages via the Directus API. Content is fetched at request time (SSR).
+    Best for frequently updated or user-generated content.
+  </Card>
+</CardGrid>
+
+## Next Steps
+
+1. Access **Directus admin** at your configured `PORT_DIRECTUS`
+2. Create a page in the `pages` collection with `status: published`
+3. View it at `/docs/{slug}/`

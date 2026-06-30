@@ -1,0 +1,57 @@
+---
+title: Directus API
+description: REST API endpoints for managing documentation pages
+---
+
+# Directus API
+
+All API calls require the `Authorization: Bearer ${DIRECTUS_TOKEN}` header.
+
+## Base URL
+
+```
+http://${SERVER_IP}:${PORT_DIRECTUS}
+```
+
+## Endpoints
+
+## `GET /items/pages`
+
+List all published pages.
+
+| Query Param | Example | Description |
+|-------------|---------|-------------|
+| `filter` | `filter[status][_eq]=published` | Filter by field |
+| `sort` | `sort=-date_published` | Sort order |
+| `limit` | `limit=10` | Max results |
+| `fields` | `fields=id,title,slug` | Select fields |
+
+## `POST /items/pages`
+
+Create a new page.
+
+```json
+{
+  "title": "Page Title",
+  "slug": "page-slug",
+  "status": "published",
+  "order": 1,
+  "date_published": "2026-06-30T12:00:00Z",
+  "content": "# Page Title\n\nMarkdown content...",
+  "excerpt": "Short description"
+}
+```
+
+## `PATCH /items/pages/:id`
+
+Update an existing page.
+
+## `DELETE /items/pages/:id`
+
+Delete a page.
+
+## Health
+
+```
+GET /server/health
+```

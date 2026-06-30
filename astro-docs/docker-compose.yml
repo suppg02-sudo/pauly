@@ -1,0 +1,27 @@
+services:
+  astro-docs:
+    build: .
+    container_name: astro-docs
+    restart: unless-stopped
+    ports:
+      - "${PORT_ASTRO:-3003}:${ASTRO_INTERNAL_PORT:-4321}"
+    environment:
+      # Astro talks to Directus via internal Docker network (container name + internal port)
+      - DIRECTUS_URL=http://directus:${DIRECTUS_INTERNAL_PORT:-8055}
+      - DIRECTUS_TOKEN=${DIRECTUS_TOKEN:-docs-api-token-change-me}
+      - HOST=0.0.0.0
+      - PORT=${ASTRO_INTERNAL_PORT:-4321}
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+    networks:
+      - shared
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+networks:
+  shared:
+    external: true
+    name: ${DOCKER_NETWORK:-directus_default}

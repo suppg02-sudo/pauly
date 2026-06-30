@@ -1,0 +1,42 @@
+---
+title: Installation
+description: How to deploy Directus + Astro Starlight with Docker
+---
+
+# Installation
+
+## Prerequisites
+
+- Docker 24+ with Docker Compose v2
+- Ubuntu 22.04 or 24.04 LTS
+- Two free TCP ports (see `.env.example`)
+
+## Quick Deploy
+
+```bash
+# 1. Clone the repo
+git clone https://github.com/suppg02-sudo/pauly.git
+cd pauly
+
+# 2. Copy and edit .env
+cp .env.example .env
+# Edit .env — set SERVER_IP, ports, and generate secrets
+
+# 3. Run the port detection script (auto-fills free ports if conflicts)
+bash scripts/detect-ports.sh
+
+# 4. Start Directus
+cd directus && docker compose up -d && cd ..
+
+# 5. Wait for Directus to bootstrap
+sleep 10
+curl http://localhost:${PORT_DIRECTUS}/server/health
+
+# 6. Start Astro
+cd astro-docs && docker compose up -d && cd ..
+
+# 7. Verify
+curl http://localhost:${PORT_ASTRO}/
+```
+
+See `SETUP.md` for the full 7-phase guide.

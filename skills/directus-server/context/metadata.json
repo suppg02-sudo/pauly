@@ -1,0 +1,10 @@
+{
+  "name": "directus-server",
+  "version": "1.1.0",
+  "description": "Directus CMS ops — fully env-driven ports, no hardcoding",
+  "trigger_commands": ["directus-server", "ds"],
+  "env_file": "/opt/pauly/.env",
+  "port_vars": ["PORT_DIRECTUS", "PORT_POSTGRES", "PORT_REDIS"],
+  "created": "2026-06-30",
+  "based_on": "directus skill (production setup)"
+}

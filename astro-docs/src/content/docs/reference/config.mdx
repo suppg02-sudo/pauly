@@ -1,0 +1,43 @@
+---
+title: Configuration
+description: All environment variables and configuration options
+---
+
+# Configuration
+
+All configuration lives in the root `.env` file. Copy `.env.example` to `.env` and adjust.
+
+## Ports
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PORT_DIRECTUS` | `8056` | External port for Directus admin + API |
+| `PORT_ASTRO` | `3003` | External port for Astro docs site |
+| `PORT_POSTGRES` | `5433` | External port for PostgreSQL |
+| `PORT_REDIS` | `6380` | External port for Redis |
+
+## Internal Ports (container-to-container)
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `DIRECTUS_INTERNAL_PORT` | `8055` | Directus inside Docker network |
+| `POSTGRES_INTERNAL_PORT` | `5432` | PostgreSQL inside Docker network |
+| `REDIS_INTERNAL_PORT` | `6379` | Redis inside Docker network |
+| `ASTRO_INTERNAL_PORT` | `4321` | Astro inside Docker network |
+
+## Server
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `SERVER_IP` | `localhost` | Public IP or hostname |
+| `DOCKER_NETWORK` | `directus_default` | Shared Docker network name |
+
+## Credentials
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `ADMIN_EMAIL` | `admin@example.com` | Directus admin email |
+| `ADMIN_PASSWORD` | `admin123` | Directus admin password |
+| `DB_PASSWORD` | `directus123` | PostgreSQL password |
+| `DIRECTUS_SECRET` | `CHANGE_ME` | Session secret (`openssl rand -hex 24`) |
+| `DIRECTUS_TOKEN` | `docs-api-token-change-me` | Static API token |
