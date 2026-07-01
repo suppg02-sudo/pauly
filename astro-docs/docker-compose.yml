@@ -8,7 +8,7 @@ services:
     environment:
       # Astro talks to Directus via internal Docker network (container name + internal port)
       - DIRECTUS_URL=http://directus:${DIRECTUS_INTERNAL_PORT:-8055}
-      - DIRECTUS_TOKEN=${DIRECTUS_TOKEN:-docs-api-token-change-me}
+      - DIRECTUS_TOKEN=${DIRECTUS_TOKEN}
       - HOST=0.0.0.0
       - PORT=${ASTRO_INTERNAL_PORT:-4321}
     volumes:
@@ -20,6 +20,17 @@ services:
       resources:
         limits:
           memory: 512M
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:${ASTRO_INTERNAL_PORT:-4321}/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
 networks:
   shared:

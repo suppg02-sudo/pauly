@@ -8,11 +8,22 @@ services:
     environment:
       - PORT=5200
     networks:
-      - ${DOCKER_NETWORK:-directus_default}
+      - shared
     deploy:
       resources:
         limits:
           memory: 512M
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:5200/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
 networks:
   shared:

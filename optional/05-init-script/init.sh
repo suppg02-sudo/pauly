@@ -246,6 +246,43 @@ setup_firewall() {
   fi
 }
 
+# ── Phase 7: Start PA Dashboard ──────────────────────────────────────────────
+start_pa_dashboard() {
+  if [ ! -d "$REPO_ROOT/optional/06-pa-skill" ]; then return; fi
+  info "Starting PA Dashboard..."
+
+  # Deploy HTML with env values
+  bash "$REPO_ROOT/optional/06-pa-skill/scripts/deploy.sh" 2>/dev/null || true
+
+  # Create systemd service
+  cat > /etc/systemd/system/pa-dashboard.service << EOF
+[Unit]
+Description=PA Dashboard
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/pauly
+ExecStart=/usr/bin/python3 -m http.server ${PORT_PA:-8901} --directory /opt/pauly
+Restart=unless-stopped
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+  systemctl daemon-reload
+  systemctl enable --now pa-dashboard 2>/dev/null || true
+  ok "PA Dashboard started on port ${PORT_PA:-8901}"
+}
+
+# ── Phase 8: Start React-Admin ───────────────────────────────────────────────
+start_react_admin() {
+  if [ ! -d "$REPO_ROOT/optional/07-react-admin" ]; then return; fi
+  info "Starting React-Admin demo..."
+  docker compose -f "$REPO_ROOT/optional/07-react-admin/docker-compose.yml" up -d --build 2>/dev/null || true
+  ok "React-Admin started on port ${PORT_REACT_ADMIN:-5200}"
+}
+
 # ── Health Check ────────────────────────────────────────────────────────────
 health_check() {
   load_env
@@ -319,6 +356,8 @@ main() {
       start_directus
       setup_collection
       start_astro
+      start_pa_dashboard
+      start_react_admin
       setup_firewall
       install_skills
       health_check
