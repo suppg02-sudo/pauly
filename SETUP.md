@@ -281,6 +281,19 @@ docker compose build --no-cache && docker compose up -d
 # URL: http://${SERVER_IP}:5200/
 ```
 
+### 7g. Setup Refine (repo self-analysis)
+
+```bash
+# Install skill
+cp -r /opt/pauly/optional/08-setuprefine ~/.config/opencode/skills/setuprefine
+
+# Quick non-interactive check
+bash /opt/pauly/optional/08-setuprefine/scripts/analyse.sh
+
+# Full interactive analysis (trigger in OpenCode)
+# setuprefine
+```
+
 ---
 
 ## Quick Reference

@@ -100,6 +100,7 @@ pauly/
     ├── 05-init-script/              ← Full bootstrap: init.sh (zero to running)
     ├── 06-pa-skill/                 ← PA dashboard (HTML + systemd service)
     └── 07-react-admin/              ← React-Admin demo panel (optional backend for Directus)
+    └── 08-setuprefine/              ← Repo self-analysis + improvement proposals (trigger: setuprefine)
 ```
 
 ## Optional Phases
@@ -113,6 +114,7 @@ pauly/
 | `optional/05-init-script` | One-command bootstrap (`init.sh`) | Fresh server — does everything |
 | `optional/06-pa-skill` | PA dashboard HTML + systemd service | When you want a visual architecture overview |
 | `optional/07-react-admin` | React-Admin demo panel | When you need a full admin UI (optional Directus backend) |
+| `optional/08-setuprefine` | Repo self-analysis + improvement proposals | Run after changes to catch issues — trigger: `setuprefine` |
 
 ## Credentials (freshly generated in .env.example)
 

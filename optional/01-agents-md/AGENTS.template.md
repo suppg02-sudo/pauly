@@ -46,6 +46,7 @@ Register these in your OpenCode config:
 | `nginx` / `npm` / `proxy` | Manage Nginx Proxy Manager |
 | `updates` / `uc` | Check for available updates (apt, Docker images, npm) |
 | `cron` / `cr` | View, edit, and monitor cron jobs |
+| `setuprefine` / `sr` | Analyse repo + propose improvements |
 
 ## Infrastructure
 
