@@ -103,7 +103,9 @@ pauly/
     ├── 08-react-admin/              ← React-Admin demo panel (optional backend for Directus)
     ├── 09-setuprefine/              ← Repo self-analysis + improvement proposals (trigger: setuprefine)
     ├── 10-guardian/                 ← System + container health watchdog (trigger: guardian)
-    └── 11-monitoring/               ← Monitoring stack
+    ├── 11-monitoring/               ← Monitoring stack
+    ├── 12-skill-factory/            ← Meta-skill for creating secure, mature skills
+    └── 13-ingestionsetup/           ← Remote ingestion API client (URL → blog post + podcast)
 ```
 
 ## Triggers
@@ -139,6 +141,9 @@ pauly/
 | `optional/08-react-admin` | React-Admin demo panel | When you need a full admin UI (optional Directus backend) |
 | `optional/09-setuprefine` | Repo self-analysis + improvement proposals | Run after changes to catch issues — trigger: `setuprefine` |
 | `optional/10-guardian` | System + container health watchdog | Full host + Docker monitoring — trigger: `guardian` |
+| `optional/11-monitoring` | Monitoring stack | When you want Prometheus/Grafana observability |
+| `optional/12-skill-factory` | Meta-skill for creating secure, mature skills | When creating new skills on the server |
+| `optional/13-ingestionsetup` | Remote ingestion API client setup | When other machines on LAN/VPN should auto-ingest URLs |
 
 ## Credentials (freshly generated in .env.example)
 
