@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" style="width:100%;max-width:800px;height:auto;display:block;">
+<rect width="800" height="520" fill="#f8fafc"/>
+<defs>
+<filter id="glow"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<filter id="shadow"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.1"/></filter>
+<marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/></marker>
+<marker id="arrow-cyan" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#06b6d4"/></marker>
+</defs>
+<text x="400" y="35" text-anchor="middle" font-family="system-ui,sans-serif" font-size="22" font-weight="bold" fill="#0f172a">Pauly Architecture</text>
+<rect x="40" y="70" width="280" height="50" rx="8" fill="#3b82f620" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="180.0" y="100.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="15" fill="#1e293b" font-weight="bold">Directus CMS</text>
+<text x="180.0" y="136" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="#64748b">Headless CMS Admin + REST API</text>
+<rect x="40" y="155" width="130" height="42" rx="8" fill="#14b8a620" stroke="#14b8a6" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="105.0" y="181.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" fill="#1e293b" >PostgreSQL + pgvector</text>
+<text x="105.0" y="213" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#64748b">Structured content + embeddings</text>
+<rect x="190" y="155" width="130" height="42" rx="8" fill="#f9731620" stroke="#f97316" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="255.0" y="181.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" fill="#1e293b" >Redis Cache</text>
+<text x="255.0" y="213" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#64748b">Session + query cache</text>
+<rect x="480" y="70" width="280" height="50" rx="8" fill="#8b5cf620" stroke="#8b5cf6" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="620.0" y="100.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="15" fill="#1e293b" font-weight="bold">Astro Starlight</text>
+<text x="620.0" y="136" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="#64748b">SSR Docs Site + UI</text>
+<rect x="480" y="155" width="130" height="42" rx="8" fill="#8b5cf620" stroke="#8b5cf6" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="545.0" y="181.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" fill="#1e293b" >Dynamic Pages</text>
+<text x="545.0" y="213" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#64748b">Fetched from Directus API</text>
+<rect x="630" y="155" width="130" height="42" rx="8" fill="#8b5cf620" stroke="#8b5cf6" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="695.0" y="181.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" fill="#1e293b" >Search + Sidebar</text>
+<text x="695.0" y="213" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#64748b">Full-text + auto-nav</text>
+<path d="M 320 95 Q 400.0 95 480 95" fill="none" stroke="#06b6d4" stroke-width="1.5" marker-end="url(#arrow-cyan)"/>
+<text x="400" y="85" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="#0891b2" font-weight="bold">REST API</text>
+<text x="400" y="100" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#64748b" >Content fetched at request time</text>
+<rect x="160" y="240" width="480" height="50" rx="8" fill="#06b6d420" stroke="#06b6d4" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="400.0" y="270.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="15" fill="#1e293b" font-weight="bold">OpenCode Skills</text>
+<text x="400.0" y="306" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="#64748b">CLI Management Interface</text>
+<rect x="170.0" y="305" width="140" height="36" rx="8" fill="#3b82f620" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="240.0" y="328.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="13" fill="#1e293b" font-weight="bold">directus-server</text>
+<text x="240.0" y="357" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#64748b">Manage Directus</text>
+<rect x="330.0" y="305" width="140" height="36" rx="8" fill="#8b5cf620" stroke="#8b5cf6" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="400.0" y="328.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="13" fill="#1e293b" font-weight="bold">astro-starlight</text>
+<text x="400.0" y="357" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#64748b">Manage Astro</text>
+<rect x="490.0" y="305" width="140" height="36" rx="8" fill="#10b98120" stroke="#10b981" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="560.0" y="328.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="13" fill="#1e293b" font-weight="bold">guardian</text>
+<text x="560.0" y="357" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#64748b">System Health</text>
+<text x="400" y="390" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" fill="#0f172a" font-weight="bold">Optional Phases</text>
+<rect x="22.0" y="410" width="140" height="32" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="92.0" y="431.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="#475569" >01-agents-md</text>
+<text x="92.0" y="458" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#94a3b8">Agent Rules</text>
+<rect x="176.0" y="410" width="140" height="32" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="246.0" y="431.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="#475569" >02-context-files</text>
+<text x="246.0" y="458" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#94a3b8">Standards</text>
+<rect x="330.0" y="410" width="140" height="32" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="400.0" y="431.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="#475569" >03-triggers</text>
+<text x="400.0" y="458" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#94a3b8">16 Trigger Cmds</text>
+<rect x="484.0" y="410" width="140" height="32" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="554.0" y="431.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="#475569" >04-skills</text>
+<text x="554.0" y="458" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#94a3b8">Skills Install</text>
+<rect x="638.0" y="410" width="140" height="32" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="708.0" y="431.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="#475569" >05-mcp-config</text>
+<text x="708.0" y="458" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#94a3b8">MCP Servers</text>
+<rect x="22.0" y="468" width="140" height="32" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="92.0" y="489.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="#475569" >06-init-script</text>
+<text x="92.0" y="516" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#94a3b8">Bootstrap</text>
+<rect x="176.0" y="468" width="140" height="32" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="246.0" y="489.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="#475569" >07-pa-skill</text>
+<text x="246.0" y="516" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#94a3b8">PA Dashboard</text>
+<rect x="330.0" y="468" width="140" height="32" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="400.0" y="489.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="#475569" >08-react-admin</text>
+<text x="400.0" y="516" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#94a3b8">Admin Panel</text>
+<rect x="484.0" y="468" width="140" height="32" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="554.0" y="489.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="#475569" >09-setuprefine</text>
+<text x="554.0" y="516" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#94a3b8">Self-Analysis</text>
+<rect x="638.0" y="468" width="140" height="32" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="708.0" y="489.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" fill="#475569" >10-guardian</text>
+<text x="708.0" y="516" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#94a3b8">Monitoring</text>
+<text x="400" y="533" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" fill="#64748b" >All ports and URLs driven by .env — nothing hardcoded</text>
+</svg>

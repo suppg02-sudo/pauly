@@ -2,14 +2,19 @@
 
 A self-contained documentation platform: **Directus CMS** as the content backend, **Astro Starlight** as the docs frontend, integrated via REST API.
 
+![Architecture](assets/architecture.svg)
+
 ## What You Get
 
 - **Directus** on `${PORT_DIRECTUS}` — headless CMS with admin UI, REST API, PostgreSQL + pgvector, Redis cache
 - **Astro Starlight** on `${PORT_ASTRO}` — docs site with sidebar, search, dark mode, dynamic pages from Directus
 - **Port auto-detection** — no hardcoded ports; `detect-ports.sh` finds free ports
-- Two **OpenCode skills** for CLI management
+- **16 trigger commands** —`co`, `?`, `u`, `improve`, `bs`, `g`, and more via `optional/03-triggers`
+- **OpenCode skills** for CLI management
 
 ## Quick Start
+
+![Deployment Flow](assets/deployment-flow.svg)
 
 ```bash
 # 1. Clone
