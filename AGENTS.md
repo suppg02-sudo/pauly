@@ -103,6 +103,10 @@ pauly/
     └── 08-setuprefine/              ← Repo self-analysis + improvement proposals (trigger: setuprefine)
 ```
 
+## Triggers
+- `g` / `guardian` : Present the Guardian menu.
+- `setuprefine` : Run repository self-analysis.
+
 ## Optional Phases
 
 | Phase | What | When to Use |
@@ -115,6 +119,7 @@ pauly/
 | `optional/06-pa-skill` | PA dashboard HTML + systemd service | When you want a visual architecture overview |
 | `optional/07-react-admin` | React-Admin demo panel | When you need a full admin UI (optional Directus backend) |
 | `optional/08-setuprefine` | Repo self-analysis + improvement proposals | Run after changes to catch issues — trigger: `setuprefine` |
+| `optional/09-guardian` | System + container health watchdog | Full host + Docker monitoring — trigger: `guardian` |
 
 ## Credentials (freshly generated in .env.example)
 

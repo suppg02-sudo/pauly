@@ -294,6 +294,39 @@ bash /opt/pauly/optional/08-setuprefine/scripts/analyse.sh
 # setuprefine
 ```
 
+### 7h. Guardian Monitoring (system + container watchdog)
+
+```bash
+# Option A: Install script only
+cp /opt/pauly/scripts/guardian.sh /usr/local/bin/pauly-guardian.sh
+mkdir -p /var/log/pauly-guardian
+
+# Option B: Full systemd timer (recommended)
+bash /opt/pauly/optional/09-guardian/scripts/install.sh --service
+
+# Install skill for OpenCode integration
+cp -r /opt/pauly/skills/guardian ~/.config/opencode/skills/guardian
+
+# Quick test
+pauly-guardian.sh status
+```
+
+### 7h. Guardian Monitoring (system + container watchdog)
+
+```bash
+# Install guardian script and systemd timer (runs every 15 min)
+bash /opt/pauly/optional/09-guardian/scripts/install.sh --service
+
+# Verify installation
+bash /opt/pauly/optional/09-guardian/scripts/install.sh --verify
+
+# On-demand health check
+pauly-guardian.sh status
+
+# Trigger in OpenCode
+# guardian
+```
+
 ---
 
 ## Quick Reference
@@ -349,4 +382,7 @@ cd /opt/pauly/astro-docs && docker compose build --no-cache && docker compose up
     ├── 04-mcp-config/             ← MCP servers
     ├── 05-init-script/            ← init.sh bootstrap
     └── 06-pa-skill/              ← PA dashboard
+    └── 07-react-admin/          ← React-Admin panel
+    └── 08-setuprefine/          ← Self-analysis
+    └── 09-guardian/             ← System + container watchdog
 ```

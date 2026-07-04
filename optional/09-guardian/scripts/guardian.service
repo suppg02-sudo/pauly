@@ -1,0 +1,14 @@
+[Unit]
+Description=Pauly Guardian — periodic system health check
+Documentation=https://github.com/suppg02-sudo/pauly
+After=network.target docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/pauly-guardian.sh report
+StandardOutput=append:/var/log/pauly-guardian/guardian.log
+StandardError=append:/var/log/pauly-guardian/guardian.log
+Environment=GUARDIAN_LOG_DIR=/var/log/pauly-guardian
+
+[Install]
+WantedBy=multi-user.target

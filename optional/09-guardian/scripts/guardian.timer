@@ -1,0 +1,10 @@
+[Unit]
+Description=Run pauly guardian every 15 minutes
+Requires=guardian.service
+
+[Timer]
+OnCalendar=*:0/15
+Persistent=true
+
+[Install]
+WantedBy=timers.target
