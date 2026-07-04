@@ -51,7 +51,7 @@ docker logs react-admin --tail 50
 docker restart react-admin
 
 # Rebuild after changes
-cd /opt/pauly/optional/07-react-admin && docker compose build --no-cache && docker compose up -d
+cd /opt/pauly/optional/08-react-admin && docker compose build --no-cache && docker compose up -d
 ```
 
 ---

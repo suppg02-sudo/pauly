@@ -8,7 +8,7 @@ The repo already contains two skills in `skills/`:
 |-------|----------|---------|
 | `directus-server` | `directus-server`, `ds` | Directus CMS CRUD, health, backup |
 | `astro-starlight` | `astro-starlight`, `starlight`, `docs`, `publish-doc` | Docs publishing, rebuild, config |
-| `pa` (optional/06-pa-skill) | `pa`, `personal-assistant`, `dashboard` | PA dashboard management |
+| `pa` (optional/07-pa-skill) | `pa`, `personal-assistant`, `dashboard` | PA dashboard management |
 
 ## Installation
 
@@ -18,7 +18,7 @@ cp -r skills/directus-server ~/.config/opencode/skills/
 cp -r skills/astro-starlight ~/.config/opencode/skills/
 
 # Optional: PA skill
-cp -r optional/06-pa-skill ~/.config/opencode/skills/pa
+cp -r optional/07-pa-skill ~/.config/opencode/skills/pa
 ```
 
 ## Key Design Principles

@@ -16,11 +16,11 @@ A genericized version of the PA dashboard skill — an interactive HTML page sho
 
 ```bash
 # Copy skill to OpenCode
-cp -r optional/06-pa-skill ~/.config/opencode/skills/pa
+cp -r optional/07-pa-skill ~/.config/opencode/skills/pa
 
 # Deploy the dashboard HTML
 source /opt/pauly/.env
-bash optional/06-pa-skill/scripts/deploy.sh
+bash optional/07-pa-skill/scripts/deploy.sh
 
 # Create systemd service
 source /opt/pauly/.env

@@ -8,19 +8,19 @@ A single `init.sh` script that bootstraps the entire server from zero to running
 
 ```bash
 # Full setup (everything)
-bash optional/05-init-script/init.sh
+bash optional/06-init-script/init.sh
 
 # Directus only
-bash optional/05-init-script/init.sh --directus
+bash optional/06-init-script/init.sh --directus
 
 # Astro only
-bash optional/05-init-script/init.sh --astro
+bash optional/06-init-script/init.sh --astro
 
 # Skills + agent config only (skip Docker)
-bash optional/05-init-script/init.sh --skills
+bash optional/06-init-script/init.sh --skills
 
 # Health check only
-bash optional/05-init-script/init.sh --check
+bash optional/06-init-script/init.sh --check
 ```
 
 ## What It Does (full mode)

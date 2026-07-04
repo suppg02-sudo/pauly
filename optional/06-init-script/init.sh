@@ -3,18 +3,18 @@
 # init.sh — Full server bootstrap for Pauly (Directus + Astro Starlight)
 #
 # Usage:
-#   bash optional/05-init-script/init.sh              # Full setup
-#   bash optional/05-init-script/init.sh --directus   # Directus only
-#   bash optional/05-init-script/init.sh --astro      # Astro only
-#   bash optional/05-init-script/init.sh --skills     # Skills + agent config only
-#   bash optional/05-init-script/init.sh --check      # Health check only
+#   bash optional/06-init-script/init.sh              # Full setup
+#   bash optional/06-init-script/init.sh --directus   # Directus only
+#   bash optional/06-init-script/init.sh --astro      # Astro only
+#   bash optional/06-init-script/init.sh --skills     # Skills + agent config only
+#   bash optional/06-init-script/init.sh --check      # Health check only
 #
 # This script:
 #   1. Installs Docker, Node.js, dependencies
 #   2. Detects free ports and fills .env
 #   3. Starts Directus + Astro
 #   4. Creates the Directus 'pages' collection
-#   5. Installs OpenCode skills + agent config
+#   5. Installs OpenCode skills + agent config + triggers
 #   6. Verifies everything is healthy
 ###############################################################################
 
@@ -204,8 +204,8 @@ install_skills() {
   ok "Skills installed (directus-server, astro-starlight)"
 
   # PA skill (optional)
-  if [ -d "$REPO_ROOT/optional/06-pa-skill" ]; then
-    cp -r "$REPO_ROOT/optional/06-pa-skill" ~/.config/opencode/skills/pa 2>/dev/null || true
+  if [ -d "$REPO_ROOT/optional/07-pa-skill" ]; then
+    cp -r "$REPO_ROOT/optional/07-pa-skill" ~/.config/opencode/skills/pa 2>/dev/null || true
     ok "PA skill installed"
   fi
 
@@ -221,12 +221,18 @@ install_skills() {
   cp "$REPO_ROOT/optional/02-context-files/workflows/workflows.md" ~/.config/opencode/context/workflows/ 2>/dev/null || true
   ok "Context files installed"
 
+  # Triggers (optional phase 03)
+  if [ -d "$REPO_ROOT/optional/03-triggers" ]; then
+    bash "$REPO_ROOT/optional/03-triggers/scripts/install.sh" 2>/dev/null || true
+    ok "Trigger context files installed (${REPO_ROOT}/optional/03-triggers)"
+  fi
+
   # MCP config
-  if [ -f "$REPO_ROOT/optional/04-mcp-config/mcp-template.json" ] && [ -f ~/.config/opencode/opencode.json ]; then
+  if [ -f "$REPO_ROOT/optional/05-mcp-config/mcp-template.json" ] && [ -f ~/.config/opencode/opencode.json ]; then
     python3 -c "
 import json
 with open('$HOME/.config/opencode/opencode.json') as f: cfg = json.load(f)
-with open('$REPO_ROOT/optional/04-mcp-config/mcp-template.json') as f: mcp = json.load(f)
+with open('$REPO_ROOT/optional/05-mcp-config/mcp-template.json') as f: mcp = json.load(f)
 cfg.setdefault('mcp', {}).update(mcp['mcp'])
 with open('$HOME/.config/opencode/opencode.json', 'w') as f: json.dump(cfg, f, indent=2)
 print('merged')
@@ -248,11 +254,11 @@ setup_firewall() {
 
 # ── Phase 7: Start PA Dashboard ──────────────────────────────────────────────
 start_pa_dashboard() {
-  if [ ! -d "$REPO_ROOT/optional/06-pa-skill" ]; then return; fi
+  if [ ! -d "$REPO_ROOT/optional/07-pa-skill" ]; then return; fi
   info "Starting PA Dashboard..."
 
   # Deploy HTML with env values
-  bash "$REPO_ROOT/optional/06-pa-skill/scripts/deploy.sh" 2>/dev/null || true
+  bash "$REPO_ROOT/optional/07-pa-skill/scripts/deploy.sh" 2>/dev/null || true
 
   # Create systemd service
   cat > /etc/systemd/system/pa-dashboard.service << EOF
@@ -277,9 +283,9 @@ EOF
 
 # ── Phase 8: Start React-Admin ───────────────────────────────────────────────
 start_react_admin() {
-  if [ ! -d "$REPO_ROOT/optional/07-react-admin" ]; then return; fi
+  if [ ! -d "$REPO_ROOT/optional/08-react-admin" ]; then return; fi
   info "Starting React-Admin demo..."
-  docker compose -f "$REPO_ROOT/optional/07-react-admin/docker-compose.yml" up -d --build 2>/dev/null || true
+  docker compose -f "$REPO_ROOT/optional/08-react-admin/docker-compose.yml" up -d --build 2>/dev/null || true
   ok "React-Admin started on port ${PORT_REACT_ADMIN:-5200}"
 }
 

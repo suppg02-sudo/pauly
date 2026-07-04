@@ -27,7 +27,7 @@ Trigger via `g` or `guardian` to present the menu.
 ## Script
 
 - `scripts/guardian.sh` — Self-contained watchdog (host + Docker)
-- `optional/09-guardian/scripts/install.sh` — System installer with systemd support
+- `optional/10-guardian/scripts/install.sh` — System installer with systemd support
 
 ## Integration
 

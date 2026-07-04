@@ -30,7 +30,7 @@ Before starting:
 ```
 1. git clone https://github.com/suppg02-sudo/pauly.git /opt/pauly
 2. cd /opt/pauly && cp .env.example .env
-3. bash optional/05-init-script/init.sh    # does everything
+3. bash optional/06-init-script/init.sh    # does everything
 ```
 
 **Manual path** — step by step:
@@ -44,7 +44,7 @@ Before starting:
 6. Generate Directus static token, set it in .env as DIRECTUS_TOKEN
 7. cd astro-docs && docker compose up -d
 8. Verify: curl http://localhost:${PORT_ASTRO}/
-9. (optional) bash optional/05-init-script/init.sh --skills
+9. (optional) bash optional/06-init-script/init.sh --skills
 ```
 
 ## Port Variables (all in `.env`)
@@ -95,16 +95,34 @@ pauly/
 └── optional/                        ← Optional phases (pick what you need)
     ├── 01-agents-md/                ← AGENTS.md template (behavioral rules + triggers)
     ├── 02-context-files/            ← Coding standards + workflows
-    ├── 03-skills/                   ← Skills installation guide
-    ├── 04-mcp-config/               ← MCP server config (context7, github, browser, search)
-    ├── 05-init-script/              ← Full bootstrap: init.sh (zero to running)
-    ├── 06-pa-skill/                 ← PA dashboard (HTML + systemd service)
-    └── 07-react-admin/              ← React-Admin demo panel (optional backend for Directus)
-    └── 08-setuprefine/              ← Repo self-analysis + improvement proposals (trigger: setuprefine)
+    ├── 03-triggers/                 ← Word-activated command protocols (16 triggers)
+    ├── 04-skills/                   ← Skills installation guide
+    ├── 05-mcp-config/               ← MCP server config (context7, github, browser, search)
+    ├── 06-init-script/              ← Full bootstrap: init.sh (zero to running)
+    ├── 07-pa-skill/                 ← PA dashboard (HTML + systemd service)
+    ├── 08-react-admin/              ← React-Admin demo panel (optional backend for Directus)
+    ├── 09-setuprefine/              ← Repo self-analysis + improvement proposals (trigger: setuprefine)
+    ├── 10-guardian/                 ← System + container health watchdog (trigger: guardian)
+    └── 11-monitoring/               ← Monitoring stack
 ```
 
 ## Triggers
-- `g` / `guardian` : Present the Guardian menu.
+- `?` / `what next` : Analyse state, surface priorities, recommend next step.
+- `co` : Resume most recent task with full context recovery.
+- `u` / `update` : Review session work, propose skill/context updates.
+- `improve` : Improve ANY component — skills, prompts, menus, config.
+- `bs` / `brainstorm` : Structured ideation and design sessions.
+- `session` : Session recovery after compaction — diagnose and fix.
+- `d` / `deferred` : Parked task management — review, resume, archive.
+- `flow` : Trace and analyse how tasks execute.
+- `smooth` : Identify and fix friction in workflows.
+- `g` / `guardian` : Present the Guardian menu (system health).
+- `nx` / `next-explorer` : Redisplay recent session files as clickable links.
+- `menu` : Central menu hub for all commands and skills.
+- `vc` / `visual-companion` : Browser-based diagram generation (requires skill).
+- `cron` : View, edit, monitor scheduled tasks.
+- `space` / `sp` : Disk space analysis and cleanup.
+- `svg` / `diagram` : Publication-ready SVG diagrams (requires skill).
 - `setuprefine` : Run repository self-analysis.
 
 ## Optional Phases
@@ -113,13 +131,14 @@ pauly/
 |-------|------|-------------|
 | `optional/01-agents-md` | AGENTS.md with behavioral rules, safety rules, triggers | Always — gives the agent instructions |
 | `optional/02-context-files` | Coding standards + workflow templates | When you want consistent conventions |
-| `optional/03-skills` | Installation guide for repo skills | When installing skills on the server |
-| `optional/04-mcp-config` | MCP servers (context7, github, browser, brave-search) | When using OpenCode IDE features |
-| `optional/05-init-script` | One-command bootstrap (`init.sh`) | Fresh server — does everything |
-| `optional/06-pa-skill` | PA dashboard HTML + systemd service | When you want a visual architecture overview |
-| `optional/07-react-admin` | React-Admin demo panel | When you need a full admin UI (optional Directus backend) |
-| `optional/08-setuprefine` | Repo self-analysis + improvement proposals | Run after changes to catch issues — trigger: `setuprefine` |
-| `optional/09-guardian` | System + container health watchdog | Full host + Docker monitoring — trigger: `guardian` |
+| `optional/03-triggers` | Word-activated command protocols (16 triggers: `co`, `?`, `u`, `bs`, `g`, etc.) | When you want quick-command workflows |
+| `optional/04-skills` | Installation guide for repo skills | When installing skills on the server |
+| `optional/05-mcp-config` | MCP servers (context7, github, browser, brave-search) | When using OpenCode IDE features |
+| `optional/06-init-script` | One-command bootstrap (`init.sh`) | Fresh server — does everything |
+| `optional/07-pa-skill` | PA dashboard HTML + systemd service | When you want a visual architecture overview |
+| `optional/08-react-admin` | React-Admin demo panel | When you need a full admin UI (optional Directus backend) |
+| `optional/09-setuprefine` | Repo self-analysis + improvement proposals | Run after changes to catch issues — trigger: `setuprefine` |
+| `optional/10-guardian` | System + container health watchdog | Full host + Docker monitoring — trigger: `guardian` |
 
 ## Credentials (freshly generated in .env.example)
 

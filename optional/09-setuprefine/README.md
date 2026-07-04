@@ -32,7 +32,7 @@ A meta-skill that analyses the pauly repo for issues, inconsistencies, and impro
 
 ```bash
 # Quick non-interactive check
-bash optional/08-setuprefine/scripts/analyse.sh
+bash optional/09-setuprefine/scripts/analyse.sh
 
 # Full interactive analysis (via OpenCode skill)
 # Trigger: setuprefine
@@ -41,7 +41,7 @@ bash optional/08-setuprefine/scripts/analyse.sh
 ## Install as Skill
 
 ```bash
-cp -r /opt/pauly/optional/08-setuprefine ~/.config/opencode/skills/setuprefine
+cp -r /opt/pauly/optional/09-setuprefine ~/.config/opencode/skills/setuprefine
 ```
 
 ## Workflow

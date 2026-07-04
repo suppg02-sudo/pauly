@@ -96,7 +96,7 @@ python3 -c "
 import json
 with open('/root/.config/opencode/opencode.json') as f:
     cfg = json.load(f)
-with open('optional/04-mcp-config/mcp-template.json') as f:
+with open('optional/05-mcp-config/mcp-template.json') as f:
     mcp = json.load(f)
 cfg.setdefault('mcp', {}).update(mcp['mcp'])
 with open('/root/.config/opencode/opencode.json', 'w') as f:

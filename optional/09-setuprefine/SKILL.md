@@ -241,7 +241,7 @@ After analysis, present findings as multi-tab question tool menus (see Phase 4).
 Runs the non-interactive checks and prints a report. Does NOT modify files.
 
 ```bash
-bash optional/08-setuprefine/scripts/analyse.sh
+bash optional/09-setuprefine/scripts/analyse.sh
 ```
 
 ---

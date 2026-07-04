@@ -15,13 +15,13 @@ Installs a generalised watchdog that monitors **both host-level system health** 
 
 ```bash
 # Option A: Script only
-bash /opt/pauly/optional/09-guardian/scripts/install.sh
+bash /opt/pauly/optional/10-guardian/scripts/install.sh
 
 # Option B: Full systemd timer (recommended)
-bash /opt/pauly/optional/09-guardian/scripts/install.sh --service
+bash /opt/pauly/optional/10-guardian/scripts/install.sh --service
 
 # Verify
-bash /opt/pauly/optional/09-guardian/scripts/install.sh --verify
+bash /opt/pauly/optional/10-guardian/scripts/install.sh --verify
 ```
 
 ## Usage

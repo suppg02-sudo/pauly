@@ -219,7 +219,7 @@ Each item is independent — install only what you want.
 ### 7a. One-Command Bootstrap (does Phases 1-6 automatically)
 
 ```bash
-bash /opt/pauly/optional/05-init-script/init.sh
+bash /opt/pauly/optional/06-init-script/init.sh
 ```
 
 ### 7b. Agent Config (AGENTS.md + context files)
@@ -233,22 +233,34 @@ cp -r /opt/pauly/optional/02-context-files/workflows ~/.config/opencode/context/
 ### 7c. MCP Servers (context7, github, browser, brave-search)
 
 ```bash
-# See optional/04-mcp-config/README.md for full setup
+# See optional/05-mcp-config/README.md for full setup
 # Quick merge into opencode.json:
 python3 -c "
 import json
 with open('/root/.config/opencode/opencode.json') as f: cfg=json.load(f)
-with open('/opt/pauly/optional/04-mcp-config/mcp-template.json') as f: mcp=json.load(f)
+with open('/opt/pauly/optional/05-mcp-config/mcp-template.json') as f: mcp=json.load(f)
 cfg.setdefault('mcp',{}).update(mcp['mcp'])
 json.dump(cfg, open('/root/.config/opencode/opencode.json','w'), indent=2)
 "
 ```
 
-### 7d. PA Dashboard
+### 7d. Triggers (word-activated command protocols)
+
+```bash
+# Install all 16 trigger context files
+bash /opt/pauly/optional/03-triggers/scripts/install.sh
+
+# Verify installation
+bash /opt/pauly/optional/03-triggers/scripts/install.sh --verify
+```
+
+Installs quick-command triggers: `co` (continue), `?` (what next), `u` (update), `improve`, `bs` (brainstorm), `session`, `d` (deferred), `flow`, `smooth`, `g` (guardian), `nx` (next-explorer), `menu`, `vc` (visual-companion), `cron`, `space`, `svg`.
+
+### 7e. PA Dashboard
 
 ```bash
 source /opt/pauly/.env
-bash /opt/pauly/optional/06-pa-skill/scripts/deploy.sh
+bash /opt/pauly/optional/07-pa-skill/scripts/deploy.sh
 
 cat > /etc/systemd/system/pa-dashboard.service << EOF
 [Unit]
@@ -264,61 +276,44 @@ EOF
 systemctl daemon-reload && systemctl enable --now pa-dashboard
 ```
 
-### 7e. Skills Installation
+### 7f. Skills Installation
 
 ```bash
 cp -r /opt/pauly/skills/directus-server ~/.config/opencode/skills/
 cp -r /opt/pauly/skills/astro-starlight ~/.config/opencode/skills/
-cp -r /opt/pauly/optional/06-pa-skill ~/.config/opencode/skills/pa
-cp -r /opt/pauly/optional/07-react-admin ~/.config/opencode/skills/react-admin
+cp -r /opt/pauly/optional/07-pa-skill ~/.config/opencode/skills/pa
+cp -r /opt/pauly/optional/08-react-admin ~/.config/opencode/skills/react-admin
 ```
 
-### 7f. React-Admin Demo Panel
+### 7g. React-Admin Demo Panel
 
 ```bash
-cd /opt/pauly/optional/07-react-admin
+cd /opt/pauly/optional/08-react-admin
 docker compose build --no-cache && docker compose up -d
 # URL: http://${SERVER_IP}:5200/
 ```
 
-### 7g. Setup Refine (repo self-analysis)
+### 7h. Setup Refine (repo self-analysis)
 
 ```bash
 # Install skill
-cp -r /opt/pauly/optional/08-setuprefine ~/.config/opencode/skills/setuprefine
+cp -r /opt/pauly/optional/09-setuprefine ~/.config/opencode/skills/setuprefine
 
 # Quick non-interactive check
-bash /opt/pauly/optional/08-setuprefine/scripts/analyse.sh
+bash /opt/pauly/optional/09-setuprefine/scripts/analyse.sh
 
 # Full interactive analysis (trigger in OpenCode)
 # setuprefine
 ```
 
-### 7h. Guardian Monitoring (system + container watchdog)
-
-```bash
-# Option A: Install script only
-cp /opt/pauly/scripts/guardian.sh /usr/local/bin/pauly-guardian.sh
-mkdir -p /var/log/pauly-guardian
-
-# Option B: Full systemd timer (recommended)
-bash /opt/pauly/optional/09-guardian/scripts/install.sh --service
-
-# Install skill for OpenCode integration
-cp -r /opt/pauly/skills/guardian ~/.config/opencode/skills/guardian
-
-# Quick test
-pauly-guardian.sh status
-```
-
-### 7h. Guardian Monitoring (system + container watchdog)
+### 7i. Guardian Monitoring (system + container watchdog)
 
 ```bash
 # Install guardian script and systemd timer (runs every 15 min)
-bash /opt/pauly/optional/09-guardian/scripts/install.sh --service
+bash /opt/pauly/optional/10-guardian/scripts/install.sh --service
 
 # Verify installation
-bash /opt/pauly/optional/09-guardian/scripts/install.sh --verify
+bash /opt/pauly/optional/10-guardian/scripts/install.sh --verify
 
 # On-demand health check
 pauly-guardian.sh status
@@ -378,11 +373,13 @@ cd /opt/pauly/astro-docs && docker compose build --no-cache && docker compose up
 └── optional/                      ← Pick what you need
     ├── 01-agents-md/              ← AGENTS.md template
     ├── 02-context-files/          ← Standards + workflows
-    ├── 03-skills/                 ← Installation guide
-    ├── 04-mcp-config/             ← MCP servers
-    ├── 05-init-script/            ← init.sh bootstrap
-    └── 06-pa-skill/              ← PA dashboard
-    └── 07-react-admin/          ← React-Admin panel
-    └── 08-setuprefine/          ← Self-analysis
-    └── 09-guardian/             ← System + container watchdog
+    ├── 03-triggers/               ← Word-activated command protocols (16 triggers)
+    ├── 04-skills/                 ← Installation guide
+    ├── 05-mcp-config/             ← MCP servers
+    ├── 06-init-script/            ← init.sh bootstrap
+    ├── 07-pa-skill/              ← PA dashboard
+    ├── 08-react-admin/          ← React-Admin panel
+    ├── 09-setuprefine/          ← Self-analysis
+    ├── 10-guardian/             ← System + container watchdog
+    └── 11-monitoring/           ← Monitoring stack
 ```

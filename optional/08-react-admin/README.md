@@ -21,7 +21,7 @@ The official [react-admin](https://github.com/marmelab/react-admin) v5 demo — 
 echo "PORT_REACT_ADMIN=5200" >> /opt/pauly/.env
 
 # Build and start
-cd /opt/pauly/optional/07-react-admin
+cd /opt/pauly/optional/08-react-admin
 docker compose build --no-cache
 docker compose up -d
 
@@ -32,7 +32,7 @@ curl -s -o /dev/null -w "%{http_code}" http://localhost:5200/
 ## Install Skill
 
 ```bash
-cp -r /opt/pauly/optional/07-react-admin ~/.config/opencode/skills/react-admin
+cp -r /opt/pauly/optional/08-react-admin ~/.config/opencode/skills/react-admin
 ```
 
 ## Directus Integration

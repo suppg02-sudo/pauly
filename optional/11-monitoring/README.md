@@ -15,7 +15,7 @@ Optional Nginx Proxy Manager + Grafana stack. Uses `NPM_PASSWORD`, `GRAFANA_PASS
 
 ```bash
 source /opt/pauly/.env
-cd /opt/pauly/optional/09-monitoring
+cd /opt/pauly/optional/11-monitoring
 docker compose up -d
 ```
 
