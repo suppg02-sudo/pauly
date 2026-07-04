@@ -194,6 +194,56 @@ These rules define how the agent should behave when working on this repo:
 5. **Read `.env` for ports**: Never assume port numbers — always check `.env`
 6. **Run detect-ports.sh** before first deploy to avoid conflicts
 
+## Smart Setup Workflow
+
+When setting up Pauly on a new or partially-configured server, use this workflow to avoid redundant work:
+
+1. **Detect state**: `bash scripts/check-setup.sh` — returns JSON of all 16 phases with `done`/`pending` status
+2. **Parse remaining**: Filter `pending` phases from the JSON output
+3. **Present via question tool**: Show only remaining phases as options with `(Recommended)` on the most impactful next step. Always include "Run all remaining" as the first option.
+4. **Execute**: Run `bash optional/06-init-script/init.sh --smart` for auto-execution of remaining phases, or use a specific flag (`--directus`, `--astro`, `--skills`, etc.) for individual phases.
+
+**Check script output example:**
+```json
+{"phases":[
+  {"id":"deps","label":"Install system dependencies","status":"done"},
+  {"id":"directus","label":"Start Directus container","status":"pending"},
+  {"id":"astro","label":"Start Astro Starlight container","status":"pending"}
+],"summary":{"total":16,"done":14,"pending":2}}
+```
+
+**Menu example:**
+```
+2 phases remaining — which to run?
+
+1. Start Directus container (Recommended)
+2. Start Astro Starlight container
+3. Exit
+```
+
+This prevents the "already-installed" problem: the user never sees options for things already completed.
+
+## Progress Tracking
+
+Every setup run creates/appends to `progress.md` at the repo root. This is a historical record of all phases, bugs, fixes, diversions, improvements, and errors.
+
+**Format** (markdown table):
+```
+| Timestamp | Phase | Type | Message |
+|-----------|-------|------|---------|
+| 2026-07-04T12:00:00Z | directus | INFO | Healthy on port 8056 |
+| 2026-07-04T12:01:00Z | collection | ERROR | Admin login failed |
+| 2026-07-04T12:02:00Z | astro | DIVERSION | Not responding after 40s |
+```
+
+**Types**: `INFO`, `BUG`, `FIX`, `DIVERSION`, `IMPROVEMENT`, `ERROR`
+
+**Agent rules**:
+- **Always check `progress.md`** at the start of any setup task — it shows what's already been done and what went wrong
+- **Log everything**: When you encounter a bug, fix, diversion, or improvement during setup, append a row to `progress.md`
+- **Never delete history**: Only append. The file is a cumulative log across all setup runs
+- **Use the helper functions**: `init.sh` provides `log_info`, `log_bug`, `log_fix`, `log_diversion`, `log_improvement`, `log_error` for bash-level logging
+
 ## Dependencies
 
 - Docker 24+ with Docker Compose v2

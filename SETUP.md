@@ -216,6 +216,27 @@ sudo ufw enable
 
 Each item is independent — install only what you want.
 
+### Smart Setup (auto-detect + pick remaining phases)
+
+The `init.sh --smart` mode detects which phases are already complete and only runs what's missing:
+
+```bash
+bash /opt/pauly/optional/06-init-script/init.sh --smart
+```
+
+**For AI agents:** Run `bash /opt/pauly/scripts/check-setup.sh` to get a JSON report of all 16 phases. Parse the `pending` phases and use the question tool to ask the user which to run. Then execute with the corresponding `init.sh` flag.
+
+Example agent workflow:
+```mermaid
+sequenceDiagram
+    Agent->>Script: bash scripts/check-setup.sh
+    Script-->>Agent: {"phases":[...], "summary":{done:5, pending:3}}
+    Agent->>User: Question: 3 phases remaining — which to run?
+    User-->>Agent: Selects 2 phases
+    Agent->>Script: init.sh --directus (for selected phase)
+    Script-->>Agent: Phase complete
+```
+
 ### 7a. One-Command Bootstrap (does Phases 1-6 automatically)
 
 ```bash

@@ -23,9 +23,15 @@ A self-contained documentation platform: **Directus CMS** as the content backend
 git clone https://github.com/suppg02-sudo/pauly.git
 cd pauly
 
+# 2. Smart setup (auto-detects what's already done)
+bash optional/06-init-script/init.sh --smart
+```
+
+Or manually:
+```bash
 # 2. Configure
 cp .env.example .env
-bash scripts/detect-ports.sh    # auto-fill free ports + detect server IP
+bash scripts/detect-ports.sh
 
 # 3. Deploy
 cd directus && docker compose up -d && cd ..

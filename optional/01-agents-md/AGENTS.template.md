@@ -67,6 +67,44 @@ Register these in your OpenCode config:
 | Grafana (optional) | `${PORT_GRAFANA}` | `grafana` |
 | PA Dashboard (optional) | `${PORT_PA}` | systemd |
 
+## Smart Setup Workflow
+
+When setting up Pauly on a new or partially-configured server:
+
+1. **Detect state**: `bash /opt/pauly/scripts/check-setup.sh` — JSON output of all phases
+2. **Parse remaining**: Filter `pending` phases
+3. **Present via question tool**: Show only remaining phases as options with `(Recommended)` on the most impactful next step. Include "Run all remaining" as first option.
+4. **Execute**: `bash /opt/pauly/optional/06-init-script/init.sh --smart` for auto-execution of remaining phases, or use a specific flag.
+
+**Menu example:**
+```
+3 phases remaining — which to run?
+
+1. Run all remaining (Recommended)
+2. Start Directus container
+3. Start Astro Starlight container
+4. Exit
+```
+
+## Progress Tracking
+
+Every setup run creates/appends to `/opt/pauly/progress.md`. This is a historical record of all phases, bugs, fixes, diversions, improvements, and errors.
+
+**Format** (markdown table):
+```
+| Timestamp | Phase | Type | Message |
+|-----------|-------|------|---------|
+| 2026-07-04T12:00:00Z | directus | INFO | Healthy on port 8056 |
+| 2026-07-04T12:01:00Z | collection | ERROR | Admin login failed |
+```
+
+**Types**: `INFO`, `BUG`, `FIX`, `DIVERSION`, `IMPROVEMENT`, `ERROR`
+
+**Agent rules**:
+- **Always check `progress.md`** at the start of any setup task
+- **Log everything**: append a row for any bug, fix, diversion, or improvement encountered
+- **Never delete history**: only append — cumulative log across all setup runs
+
 ## Rules for This Server
 
 1. **Read `.env` first**: `source /opt/pauly/.env` before any command that touches ports or credentials

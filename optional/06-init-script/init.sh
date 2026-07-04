@@ -23,6 +23,37 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 ENV_FILE="$REPO_ROOT/.env"
+PROGRESS_FILE="$REPO_ROOT/progress.md"
+
+# ── Progress Log ─────────────────────────────────────────────────────────────
+init_progress() {
+  if [ ! -f "$PROGRESS_FILE" ]; then
+    cat > "$PROGRESS_FILE" << 'EOF'
+# Setup Progress Log
+
+Historical record of setup phases, bugs, fixes, diversions, improvements, and errors.
+
+| Timestamp | Phase | Type | Message |
+|-----------|-------|------|---------|
+EOF
+    info "Created $PROGRESS_FILE"
+  fi
+}
+
+log_progress() {
+  local phase="$1" type="$2"; shift 2
+  local msg="$*"
+  local ts; ts=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
+  init_progress
+  echo "| $ts | $phase | $type | $msg |" >> "$PROGRESS_FILE"
+}
+
+log_bug()      { log_progress "$1" "BUG"      "${@:2}"; }
+log_fix()      { log_progress "$1" "FIX"      "${@:2}"; }
+log_diversion() { log_progress "$1" "DIVERSION" "${@:2}"; }
+log_improvement() { log_progress "$1" "IMPROVEMENT" "${@:2}"; }
+log_error()    { log_progress "$1" "ERROR"    "${@:2}"; }
+log_info()     { log_progress "$1" "INFO"     "${@:2}"; }
 
 # ── Colors ───────────────────────────────────────────────────────────────────
 RED='\033[0;31m'
@@ -45,8 +76,42 @@ for arg in "$@"; do
     --skills)    MODE="skills" ;;
     --check)     MODE="check" ;;
     --full)      MODE="full" ;;
+    --smart)     MODE="smart" ;;
   esac
 done
+
+# ── Smart Mode (auto-detect and run only pending phases) ─────────────────────
+smart_phases() {
+  local remaining
+  remaining=$(bash "$REPO_ROOT/scripts/check-setup.sh" --phases remaining)
+  info "Remaining phases: ${remaining:-none}"
+  [ -z "$remaining" ] && { ok "All phases complete."; exit 0; }
+
+  while IFS=',' read -ra PHASES; do
+    for pid in "${PHASES[@]}"; do
+      case "$pid" in
+        env)         cp "$REPO_ROOT/.env.example" "$ENV_FILE" 2>/dev/null || true
+                     local sec; sec=$(openssl rand -hex 24)
+                     local tok; tok=$(openssl rand -hex 16)
+                     sed -i "s|^DIRECTUS_SECRET=.*|DIRECTUS_SECRET=${sec}|;s|^DIRECTUS_TOKEN=.*|DIRECTUS_TOKEN=${tok}|" "$ENV_FILE"
+                     load_env; ok ".env configured" ;;
+        ports)       bash "$REPO_ROOT/scripts/detect-ports.sh" ;;
+        directus)    start_directus ;;
+        collection)  setup_collection ;;
+        astro)       start_astro ;;
+        context)     mkdir -p "$HOME/.config/opencode/context/standards" "$HOME/.config/opencode/context/workflows"
+                     cp "$REPO_ROOT/optional/02-context-files/standards/coding.md" "$HOME/.config/opencode/context/standards/" 2>/dev/null || true
+                     cp "$REPO_ROOT/optional/02-context-files/workflows/workflows.md" "$HOME/.config/opencode/context/workflows/" 2>/dev/null || true
+                     ok "Context files installed" ;;
+        skills)      install_skills ;;
+        react-admin) start_react_admin ;;
+        guardian)    bash "$REPO_ROOT/optional/10-guardian/scripts/install.sh" 2>/dev/null && ok "Guardian installed" || warn "Guardian skipped" ;;
+        firewall)    setup_firewall ;;
+        *)           warn "Unknown phase: $pid" ;;
+      esac
+    done
+  done <<< "$remaining"
+}
 
 # ── Load .env ────────────────────────────────────────────────────────────────
 load_env() {
@@ -62,14 +127,17 @@ load_env() {
 # ── Phase 1: Install Dependencies ───────────────────────────────────────────
 install_deps() {
   info "Installing system dependencies..."
+  log_info deps "Phase started"
 
   if ! command -v docker &>/dev/null; then
     info "Installing Docker..."
     curl -fsSL https://get.docker.com | sh
     usermod -aG docker "$USER" 2>/dev/null || true
     ok "Docker installed"
+    log_info deps "Docker installed"
   else
     ok "Docker already installed"
+    log_info deps "Docker already present"
   fi
 
   if ! command -v node &>/dev/null; then
@@ -83,11 +151,13 @@ install_deps() {
 
   apt-get install -y python3 python3-pip git jq curl > /dev/null 2>&1 || true
   ok "Dependencies ready"
+  log_info deps "Phase complete"
 }
 
 # ── Phase 2: Detect Ports ───────────────────────────────────────────────────
 detect_ports() {
   info "Detecting free ports..."
+  log_info ports "Phase started"
   bash "$REPO_ROOT/scripts/detect-ports.sh"
   load_env
 
@@ -98,13 +168,16 @@ detect_ports() {
       sed -i "s|^SERVER_IP=.*|SERVER_IP=${DETECTED_IP}|" "$ENV_FILE"
       load_env
       ok "SERVER_IP detected: $SERVER_IP"
+      log_info ports "SERVER_IP detected: $SERVER_IP"
     fi
   fi
+  log_info ports "Phase complete"
 }
 
 # ── Phase 3: Start Directus ─────────────────────────────────────────────────
 start_directus() {
   info "Starting Directus..."
+  log_info directus "Phase started"
   cp "$ENV_FILE" "$REPO_ROOT/directus/.env"
   docker compose -f "$REPO_ROOT/directus/docker-compose.yml" up -d
 
@@ -112,22 +185,24 @@ start_directus() {
   for i in $(seq 1 30); do
     if curl -sf "http://localhost:${PORT_DIRECTUS:-8056}/server/health" | grep -q "ok"; then
       ok "Directus healthy on port ${PORT_DIRECTUS}"
+      log_info directus "Healthy on port ${PORT_DIRECTUS}"
       break
     fi
     sleep 2
-    [ $i -eq 30 ] && fail "Directus failed to start"
+    [ $i -eq 30 ] && { log_error directus "Failed to start"; fail "Directus failed to start"; }
   done
 }
 
 # ── Phase 4: Create Directus Collection ─────────────────────────────────────
 setup_collection() {
   info "Setting up Directus collections and token..."
+  log_info collection "Phase started"
 
   # Login as admin
   ADMIN_TOKEN=$(curl -sf -X POST "http://localhost:${PORT_DIRECTUS}/auth/login" \
     -H "Content-Type: application/json" \
     -d "{\"email\":\"${ADMIN_EMAIL}\",\"password\":\"${ADMIN_PASSWORD}\"}" \
-    | jq -r '.data.access_token') || fail "Admin login failed"
+    | jq -r '.data.access_token') || { log_error collection "Admin login failed"; fail "Admin login failed"; }
 
   # Set static token
   curl -sf -X PATCH "http://localhost:${PORT_DIRECTUS}/users/me" \
@@ -176,6 +251,7 @@ setup_collection() {
 # ── Phase 5: Start Astro ────────────────────────────────────────────────────
 start_astro() {
   info "Starting Astro Starlight..."
+  log_info astro "Phase started"
   cp "$ENV_FILE" "$REPO_ROOT/astro-docs/.env"
   docker network create "${DOCKER_NETWORK}" 2>/dev/null || true
   docker compose -f "$REPO_ROOT/astro-docs/docker-compose.yml" build --no-cache
@@ -185,11 +261,13 @@ start_astro() {
     CODE=$(curl -sf -o /dev/null -w "%{http_code}" "http://localhost:${PORT_ASTRO:-3003}/" 2>/dev/null || echo "000")
     if [ "$CODE" = "200" ]; then
       ok "Astro healthy on port ${PORT_ASTRO} (HTTP 200)"
+      log_info astro "Healthy on port ${PORT_ASTRO} (HTTP 200)"
       return
     fi
     sleep 2
   done
   warn "Astro not responding yet (may still be starting)"
+  log_diversion astro "Not responding after 40s — may still be starting"
 }
 
 # ── Phase 6: Install Skills + Agent Config ──────────────────────────────────
@@ -238,6 +316,7 @@ with open('$HOME/.config/opencode/opencode.json', 'w') as f: json.dump(cfg, f, i
 print('merged')
 " 2>/dev/null && ok "MCP config merged" || warn "MCP merge skipped (no opencode.json)"
   fi
+  log_info skills "Phase complete"
 }
 
 # ── Phase 7: Firewall ───────────────────────────────────────────────────────
@@ -249,6 +328,9 @@ setup_firewall() {
     ufw allow "${PORT_ASTRO:-3003}/tcp" 2>/dev/null || true
     yes | ufw enable 2>/dev/null || true
     ok "Firewall configured"
+    log_info firewall "UFW configured for ports ${PORT_DIRECTUS}, ${PORT_ASTRO}"
+  else
+    log_diversion firewall "ufw not installed — skipped"
   fi
 }
 
@@ -334,6 +416,8 @@ main() {
   echo "════════════════════════════════════════════"
   echo ""
 
+  init_progress
+  log_info setup "Bootstrap started (mode: $MODE)"
   load_env
 
   case "$MODE" in
@@ -366,6 +450,11 @@ main() {
       start_react_admin
       setup_firewall
       install_skills
+      health_check
+      ;;
+    smart)
+      load_env
+      smart_phases
       health_check
       ;;
   esac
