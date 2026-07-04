@@ -9,7 +9,7 @@ services:
     environment:
       - SECRET=${DIRECTUS_SECRET:-change-me-to-a-random-string}
       - ADMIN_EMAIL=${ADMIN_EMAIL:-admin@example.com}
-      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
       - DB_CLIENT=pg
       - DB_HOST=postgres
       - DB_PORT=${POSTGRES_INTERNAL_PORT:-5432}
