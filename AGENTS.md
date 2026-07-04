@@ -154,7 +154,38 @@ pauly/
 | Grafana Password | `${GRAFANA_PASSWORD}` |
 | Webhook Secret | `${WEBHOOK_SECRET}` |
 
-## Agent Rules
+## Behavioral Rules
+
+These rules define how the agent should behave when working on this repo:
+
+### Process
+- **Rules first, commands second**: This file defines behavior; command/tool details live in dedicated context files under `optional/03-triggers/templates/`.
+- **Load skills first**: Before acting, load every skill that might apply (even 1% chance). Skills define how to approach tasks correctly.
+- **Be creative**: Don't just execute — propose better paths if you see one.
+- **Context over memory**: Persistent rules belong here, in skills, or in context files. Never rely on session memory for repeatable behavior.
+- **Use NextExplorer**: After completing any session task, run the `nx` trigger to display clickable links for modified files.
+
+### Quality
+- **Test fixes**: Verify after changes. Don't report done without evidence. Check via `curl`, container logs, or lint/build as appropriate.
+- **Prevent recurrence**: After fixing any issue, proactively suggest improvements to avoid the same or similar issues — configs, monitoring, host tuning, health checks.
+- **No interactive editors**: Never use interactive editors (nano, vim). Use Python, here-docs, or other non-interactive constructs.
+- **Double-check webservers**: After any deployment, `curl` the actual endpoint and confirm a 200 OK status and expected content. Never assume a connection means success.
+
+### Safety
+- **Deletion safety**: Deletions need explicit confirmation, current target verification, and auth check before executing.
+- **Dangerous commands**: Run an audit checklist before executing destructive commands (rm -rf, docker system prune, dd, etc.).
+- **Docker cleanup**: Limited to cache/dangling/stopped containers only. Never prune volumes or systems.
+- **Unique port picking**: Before any deployment, explicitly verify that the chosen ports in `.env` are not already in use using `ss -tuln` or `lsof -i`. Don't rely solely on `detect-ports.sh`.
+
+### Presentation
+- **Menu presentation**: Always use the question tool with clear options. Lead with `(Recommended)`. Always include an exit option. Never hand-craft question JSON.
+
+### Anti-Patterns
+- Don't auto-load skills unless triggered by user intent
+- Don't use `fetch` when `web_search`/`browser`/`mcp` is available
+- Don't ignore local or MCP-available tools in favour of remote alternatives
+
+## Project Rules
 
 1. **API-first**: Never use a browser for tasks the API handles (see skills)
 2. **Always set `date_published`**: Pages without it are filtered out

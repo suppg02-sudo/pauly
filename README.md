@@ -9,7 +9,9 @@ A self-contained documentation platform: **Directus CMS** as the content backend
 - **Directus** on `${PORT_DIRECTUS}` — headless CMS with admin UI, REST API, PostgreSQL + pgvector, Redis cache
 - **Astro Starlight** on `${PORT_ASTRO}` — docs site with sidebar, search, dark mode, dynamic pages from Directus
 - **Port auto-detection** — no hardcoded ports; `detect-ports.sh` finds free ports
-- **16 trigger commands** —`co`, `?`, `u`, `improve`, `bs`, `g`, and more via `optional/03-triggers`
+- **16 mandatory trigger commands** — (`nx`/NextExplorer, `co`, `?`, `u`, `improve`, `bs`, `g`, etc.)
+- **Skill Factory** — automated skill generation via `optional/12-skill-factory`
+- **Governed agent behavior** — standardized behavioral rules for consistent agent performance
 - **OpenCode skills** for CLI management
 
 ## Quick Start

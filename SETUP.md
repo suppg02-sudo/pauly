@@ -322,6 +322,13 @@ pauly-guardian.sh status
 # guardian
 ```
 
+### 7j. Skill Factory (automated skill generation)
+
+```bash
+# Install skill-factory-min
+cp -r /opt/pauly/optional/12-skill-factory ~/.config/opencode/skills/skill-factory
+```
+
 ---
 
 ## Quick Reference
