@@ -46,7 +46,44 @@ bash /opt/pauly/optional/03-triggers/scripts/install.sh --uninstall
 2. **Trigger registry** is installed as `trigger-words.md` — the master table of all triggers
 3. **AGENTS.md** is updated with a `## Word Triggers` section listing the trigger commands
 
-The agent reads `trigger-words.md` and the individual context files when a trigger word is detected.
+## CRITICAL: Trigger Detection & Response
+
+**When the user types ANY of the following, you MUST read the corresponding trigger file:**
+
+| Input | Trigger | Action |
+|-------|---------|--------|
+| `co` | Continue | Read `continue-instructions.md` and follow the protocol |
+| `?` | What Next | Read `what-next-instructions.md` and follow the protocol |
+| `u` | Update | Read `update-instructions.md` and follow the protocol |
+| `improve` | Improve | Read `improve-instructions.md` and follow the protocol |
+| `bs` | Brainstorm | Read `brainstorm-instructions.md` and follow the protocol |
+| `session` | Session | Read `session-recovery.md` and follow the protocol |
+| `d` | Deferred | Read `deferred-options.md` and follow the protocol |
+| `flow` | Flow | Read `flow-instructions.md` and follow the protocol |
+| `smooth` | Smooth | Read `smooth-instructions.md` and follow the protocol |
+| `g` | Guardian | Read `guardian-instructions.md` and follow the protocol |
+| `nx` | NextExplorer | Read `next-explorer-instructions.md` and follow the protocol |
+| `menu` | Menu | Read `central-menu.md` and follow the protocol |
+| `vc` | Visual Companion | Read `visual-companion-instructions.md` and follow the protocol |
+| `cron` | Cron | Read `cron-instructions.md` and follow the protocol |
+| `space` | Space | Read `space-instructions.md` and follow the protocol |
+| `svg` | SVG | Read `svg-instructions.md` and follow the protocol |
+| `>` | Continue (alias) | Read `continue-instructions.md` and follow the protocol |
+| `1` | What Next (alias) | Read `what-next-instructions.md` and follow the protocol |
+| `2` | Update (alias) | Read `update-instructions.md` and follow the protocol |
+
+**Detection Rules:**
+- Trigger words can be 1-3 characters (`>`, `1`, `2`, `co`, `?`, `u`, etc.)
+- Triggers are case-sensitive (`co` ≠ `CO`)
+- Triggers can appear anywhere in the message (start, middle, end)
+- If multiple triggers in one message, process each one
+- Always read the trigger file FIRST, then follow the protocol exactly
+
+**Response Format:**
+1. Detect trigger word(s) in user message
+2. Read the corresponding `.md` file from `~/.config/opencode/agents/context/`
+3. Follow the protocol in that file
+4. Execute the trigger's workflow
 
 ## Configuration
 
