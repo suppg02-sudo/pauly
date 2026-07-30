@@ -109,23 +109,34 @@ pauly/
 ```
 
 ## Triggers
-- `?` / `what next` : Analyse state, surface priorities, recommend next step.
-- `co` : Resume most recent task with full context recovery.
-- `u` / `update` : Review session work, propose skill/context updates.
-- `improve` : Improve ANY component — skills, prompts, menus, config.
-- `bs` / `brainstorm` : Structured ideation and design sessions.
-- `session` : Session recovery after compaction — diagnose and fix.
-- `d` / `deferred` : Parked task management — review, resume, archive.
-- `flow` : Trace and analyse how tasks execute.
-- `smooth` : Identify and fix friction in workflows.
-- `g` / `guardian` : Present the Guardian menu (system health).
-- `nx` / `next-explorer` : Redisplay recent session files as clickable links.
-- `menu` : Central menu hub for all commands and skills.
-- `vc` / `visual-companion` : Browser-based diagram generation (requires skill).
-- `cron` : View, edit, monitor scheduled tasks.
-- `space` / `sp` : Disk space analysis and cleanup.
-- `svg` / `diagram` : Publication-ready SVG diagrams (requires skill).
-- `setuprefine` : Run repository self-analysis.
+
+**CRITICAL: When the user types ANY trigger word, you MUST read the corresponding trigger file from `optional/03-triggers/templates/` and follow the protocol exactly.**
+
+| Trigger | Command(s) | Purpose | Trigger File |
+|---------|------------|---------|--------------|
+| Continue | `co`, `>` | Resume most recent task with full context recovery | [continue-instructions.md](optional/03-triggers/templates/continue-instructions.md) |
+| What Next | `?`, `1`, `what next`, `wn` | Analyse state, surface priorities, recommend next step | [what-next-instructions.md](optional/03-triggers/templates/what-next-instructions.md) |
+| Update | `u`, `2`, `update` | Review session work, propose skill/context updates | [update-instructions.md](optional/03-triggers/templates/update-instructions.md) |
+| Improve | `improve` | Improve ANY component — skills, prompts, menus, config | [improve-instructions.md](optional/03-triggers/templates/improve-instructions.md) |
+| Brainstorm | `bs`, `brainstorm` | Structured ideation and design sessions | [brainstorm-instructions.md](optional/03-triggers/templates/brainstorm-instructions.md) |
+| Session | `session` | Session recovery after compaction — diagnose and fix | [session-recovery.md](optional/03-triggers/templates/session-recovery.md) |
+| Deferred | `d`, `deferred` | Parked task management — review, resume, archive | [deferred-options.md](optional/03-triggers/templates/deferred-options.md) |
+| Flow | `flow` | Trace and analyse how tasks execute | [flow-instructions.md](optional/03-triggers/templates/flow-instructions.md) |
+| Smooth | `smooth` | Identify and fix friction in workflows | [smooth-instructions.md](optional/03-triggers/templates/smooth-instructions.md) |
+| Guardian | `g`, `guardian` | Present the Guardian menu (system health) | [guardian-instructions.md](optional/03-triggers/templates/guardian-instructions.md) |
+| NextExplorer | `nx`, `next-explorer` | Redisplay recent session files as clickable links | [next-explorer-instructions.md](optional/03-triggers/templates/next-explorer-instructions.md) |
+| Menu | `menu` | Central menu hub for all commands and skills | [central-menu.md](optional/03-triggers/templates/central-menu.md) |
+| Visual Companion | `vc`, `visual-companion` | Browser-based diagram generation (requires skill) | [visual-companion-instructions.md](optional/03-triggers/templates/visual-companion-instructions.md) |
+| Cron | `cron` | View, edit, monitor scheduled tasks | [cron-instructions.md](optional/03-triggers/templates/cron-instructions.md) |
+| Space | `space`, `sp` | Disk space analysis and cleanup | [space-instructions.md](optional/03-triggers/templates/space-instructions.md) |
+| SVG | `svg`, `diagram` | Publication-ready SVG diagrams (requires skill) | [svg-instructions.md](optional/03-triggers/templates/svg-instructions.md) |
+| SetupRefine | `setuprefine` | Run repository self-analysis | [setuprefine-instructions.md](optional/09-setuprefine/SKILL.md) |
+
+**Detection Rules:**
+- Trigger words can be 1-3 characters (`>`, `1`, `2`, `co`, `?`, `u`, etc.)
+- Triggers are case-sensitive (`co` ≠ `CO`)
+- Always read the trigger file FIRST, then follow the protocol exactly
+- If multiple triggers in one message, process each one
 
 ## Optional Phases
 
